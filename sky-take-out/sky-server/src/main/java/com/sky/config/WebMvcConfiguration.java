@@ -72,6 +72,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         log.info("开始设置静态资源映射...");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        //将图片映射到本地路径
+        registry.addResourceHandler("/image/**").addResourceLocations("file:D:/learn/uber project/IMAGE/");
     }
 
     /**
