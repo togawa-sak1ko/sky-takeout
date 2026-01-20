@@ -3,10 +3,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.SetmealDishMapper">
 
+    <insert id="addMealDishes" parameterType="list">
+        insert into setmeal_dish (setmeal_id, dish_id, name, price, copies)
+        values
+        <foreach collection="setmealDishes" item="setmealdish" separator=",">
+            (#{setmealdish.setmealId}, #{setmealdish.dishId}, #{setmealdish.name}, #{setmealdish.price}, #{setmealdish.copies})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByIds">
+        delete from setmeal_dish where setmeal_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="getSetmealIdsByDishIds" resultType="java.lang.Long">
         select setmeal_id from setmeal_dish where dish_id in
         <foreach collection="dishIds" item = "dishId" separator="," open="(" close=")">
             #{dishId}
         </foreach>
+    </select>
+    <select id="pageQuery" resultType="com.sky.entity.SetmealDish">
+        select * from setmeal_dish
+        <where>
+            <if test="name != null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="categoryId!=null">
+                and category_id = #{categoryId}
+            </if>
+        </where>
     </select>
 </mapper>
